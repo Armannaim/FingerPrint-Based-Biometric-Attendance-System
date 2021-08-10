@@ -1,0 +1,88 @@
+#include <Keypad.h>
+#include <Wire.h>
+#include "RTClib.h"
+
+RTC_DS1307 rtc;
+const int ROW_NUM = 4; //four rows
+const int COLUMN_NUM = 3; //three columns
+
+char keys[ROW_NUM][COLUMN_NUM] = {
+  {'1','2','3'},
+  {'4','5','6'},
+  {'7','8','9'},
+  {'*','0','#'}
+};
+
+byte pin_rows[ROW_NUM] = {10, 9, 8, 7}; //connect to the row pinouts of the keypad
+byte pin_column[COLUMN_NUM] = {13, 12, 11}; //connect to the column pinouts of the keypad
+
+Keypad keypad = Keypad( makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
+
+const String Student_1 = "016"; // change your password here
+const String Student_2 = "127"; // change your password here
+const String Student_3 = "041"; // change your password here
+String input_Student;
+
+void setup(){
+  Serial.begin(9600);
+  input_Student.reserve(32); // maximum input characters is 33, change if needed
+}
+
+void loop(){
+  char key = keypad.getKey();
+
+  if (key){
+    Serial.println(key);
+
+    if(key == '*') {
+      input_Student = ""; // Input Student ID
+    } else if(key == '#') 
+    
+    
+    {
+      if(input_Student == Student_1) {
+        Serial.println("Attendance Added for Medha Paul Chowdhury");
+        
+      } 
+
+      else if(input_Student == Student_2) {
+        Serial.println("Attendance Added for Borhan Uddin Arman");
+         
+      }
+
+     else if(input_Student == Student_3) {
+        Serial.println("Attendance Added for Asif Newaj Chowdhury");
+        
+      }
+      
+      else {
+        Serial.println("Incorrect Student ID, Try Again");
+      }
+
+{
+    DateTime now=rtc.now();
+    Serial.print("Date & Time: ");
+    Serial.print(now.day(),DEC); 
+    Serial.print("/");
+    Serial.print(now.month(),DEC);Serial.print(":");
+    Serial.print(now.second(),DEC);
+    Serial.print(" | ");
+    Serial.print(now.hour(),DEC);Serial.print(":");
+    Serial.print(now.minute(),DEC);Serial.print(":");
+    Serial.print(now.second(),DEC);
+
+    Serial.println();
+    delay(1000);
+  }
+      input_Student = "";
+    } else {
+      input_Student += key;
+    }
+  }
+}
+
+
+   
+    
+    
+    
